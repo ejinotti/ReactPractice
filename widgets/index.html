@@ -7,6 +7,86 @@
     <script src="https://fb.me/JSXTransformer-0.13.3.js" charset="utf-8"></script>
   </head>
   <body>
-    helloes..
+    <div id="autocomplete"></div>
+    <script type="text/jsx">
+      var AutoComplete = React.createClass({
+        getInitialState: function () {
+          return {str: ''};
+        },
+        handleChange: function (e) {
+          this.setState({str: e.target.value});
+        },
+        handleLiClick: function (e) {
+          this.setState({str: e.target.textContent});
+        },
+        render: function () {
+          var items = this.props.items;
+          var str = this.state.str.trim().replace(/\\/g, '');
+          var that = this;
+
+          console.log('render().. str = ' + str);
+
+          if (str.length) {
+            items = items.filter(function (i) {
+              return i.match(new RegExp(str, 'i'));
+            });
+          }
+
+          return (
+            <div>
+              <input type="text"
+                     value={this.state.str}
+                     onChange={this.handleChange}
+                     placeholder="Enter text.." />
+              <ul>
+                {
+                  items.map(function (item, i) {
+                    return (
+                      <li key={i} onClick={that.handleLiClick}>
+                        {item}
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            </div>
+          );
+        }
+      });
+
+      var names = [
+        'Antonio',
+        'Bob',
+        'Captain Crunch',
+        'Dilbert',
+        'Eduardo',
+        'Francesco',
+        'George',
+        'Harold',
+        'I P. Frequently',
+        'Jimmy',
+        'Karlito Brigante',
+        'Leisure Suit Larry',
+        'Mangorita Man',
+        'Newt',
+        'Oscar',
+        'P-Diddy',
+        'Qbert',
+        'Robert',
+        'Stallone',
+        'Tango and Cash',
+        'Uranus',
+        'Victor',
+        'Walter',
+        'Xavierito',
+        'Yankee',
+        'Zunga'
+      ];
+
+      React.render(
+        <AutoComplete items={names} />,
+        document.getElementById('autocomplete')
+      );
+    </script>
   </body>
 </html>
