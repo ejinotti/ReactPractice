@@ -5,6 +5,12 @@
     <title>Autocomplete</title>
     <script src="https://fb.me/react-0.13.3.js" charset="utf-8"></script>
     <script src="https://fb.me/JSXTransformer-0.13.3.js" charset="utf-8"></script>
+    <style>
+      li > span:hover {
+        cursor: pointer;
+        background: orange;
+      }
+    </style>
   </head>
   <body>
     <div id="autocomplete"></div>
@@ -24,11 +30,10 @@
           var str = this.state.str.trim().replace(/\\/g, '');
           var that = this;
 
-          console.log('render().. str = ' + str);
-
           if (str.length) {
             items = items.filter(function (i) {
-              return i.match(new RegExp(str, 'i'));
+              return i.match(new RegExp('^' + str, 'i')) &&
+                i.length > str.length;
             });
           }
 
@@ -42,8 +47,8 @@
                 {
                   items.map(function (item, i) {
                     return (
-                      <li key={i} onClick={that.handleLiClick}>
-                        {item}
+                      <li key={i}>
+                        <span onClick={that.handleLiClick}>{item}</span>
                       </li>
                     );
                   })
@@ -55,32 +60,24 @@
       });
 
       var names = [
+        'Abba',
+        'Aberration',
+        'Adam',
+        'Additional',
+        'Albert',
+        'Alimony',
+        'Amatuer',
+        'Ankle',
+        'Anthony',
+        'Antoine',
         'Antonio',
-        'Bob',
-        'Captain Crunch',
-        'Dilbert',
-        'Eduardo',
-        'Francesco',
-        'George',
-        'Harold',
-        'I P. Frequently',
-        'Jimmy',
-        'Karlito Brigante',
-        'Leisure Suit Larry',
-        'Mangorita Man',
-        'Newt',
-        'Oscar',
-        'P-Diddy',
-        'Qbert',
-        'Robert',
-        'Stallone',
-        'Tango and Cash',
-        'Uranus',
-        'Victor',
-        'Walter',
-        'Xavierito',
-        'Yankee',
-        'Zunga'
+        'Apartment',
+        'Apple',
+        'Approximation',
+        'Aptitude',
+        'Arthritis',
+        'Arthur',
+        'Arturo'
       ];
 
       React.render(
