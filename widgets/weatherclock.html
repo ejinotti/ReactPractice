@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WeatherClock</title>
+    <script src="https://fb.me/react-0.13.3.js" charset="utf-8"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js" charset="utf-8"></script>
+    <style>
+    </style>
+  </head>
+  <body>
+    <div id="weatherclock"></div>
+    <script type="text/jsx">
+      var WeatherClock = React.createClass({
+        getInitialState: function () {
+          return {date: new Date()};
+        },
+        componentDidMount: function () {
+          var that = this;
+          this.intervalId = setInterval(function () {
+            that.setState({date: new Date()});
+          }, 1000);
+        },
+        componentWillUnmount: function () {
+          clearInterval(this.intervalId);
+        },
+        render: function () {
+          return (<p>{this.state.date.toString()}</p>);
+        }
+      });
+
+      React.render(
+        <WeatherClock />,
+        document.getElementById('weatherclock')
+      );
+    </script>
+  </body>
+</html>
