@@ -17,15 +17,53 @@
         },
         componentDidMount: function () {
           var that = this;
+
           this.intervalId = setInterval(function () {
             that.setState({date: new Date()});
           }, 1000);
+
+          navigator.geolocation.getCurrentPosition(function (p) {
+            var lat = p.coords.latitude;
+            var long = p.coords.longitude;
+            var key = 'helloes';
+
+            var xhr = new XMLHttpRequest();
+            var url = ['http://api.openweathermap.org/data/2.5/weather',
+              '?lat=', lat,
+              '&lon=', long,
+              '&units=', 'imperial',
+              '&APPID=', key
+            ].join('');
+
+            xhr.open('GET', url, true);
+            xhr.onload = function () {
+              that.setState({weatherData: JSON.parse(xhr.response)});
+            };
+
+            xhr.send();
+          });
         },
         componentWillUnmount: function () {
           clearInterval(this.intervalId);
         },
         render: function () {
-          return (<p>{this.state.date.toString()}</p>);
+          if (this.state.weatherData) {
+            var w = this.state.weatherData;
+            var weather = w.weather[0];
+
+            return (
+              <div>
+                <p>{this.state.date.toString()}</p>
+                <p>
+                  {'Weather for \'' + w.name + '\': ' +
+                  Math.round(w.main.temp) + 'F ' + weather.main +
+                  ' / ' + weather.description}
+                </p>
+              </div>
+            );
+          } else {
+            return <p>{this.state.date.toString()}</p>;
+          }
         }
       });
 
