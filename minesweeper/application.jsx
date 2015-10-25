@@ -7,10 +7,25 @@
         won: false
       };
     },
-    updateGame: function () {
+    updateGame: function (pos, flagging) {
+      var tile = this.state.board.grid[pos[0]][pos[1]];
 
+      if (flagging) {
+        tile.toggleFlag();
+      } else {
+        tile.explore();
+      }
+
+      var won = this.state.board.won();
+      var over = won || this.state.board.lost();
+
+      this.setState({over: over, won: won});
     },
     render: function () {
+      if (this.state.over) {
+        alert('game over: ' + (this.state.won ? 'Victory!' : 'Defeat!'));
+        location.reload();
+      }
       return (
         <Board board={this.state.board} update={this.updateGame} />
       );
@@ -33,7 +48,7 @@
                         <Tile key={j}
                               tile={tile}
                               position={[i,j]}
-                              update={that.updateGame} />
+                              update={that.props.update} />
                       );
                     })
                   }
@@ -47,14 +62,17 @@
   });
 
   var Tile = React.createClass({
+    handleClick: function (e) {
+      this.props.update(this.props.position, e.altKey);
+    },
     render: function () {
       var t = this.props.tile;
       var cls = 'tile';
-      var text = ' ';
+      var text = '';
 
       if (t.explored) {
         cls += ' explored' + (t.bombed ? ' bombed' : '');
-        text = t.adjacentBombCount() || ' ';
+        text = t.adjacentBombCount() || '';
       }
 
       if (t.flagged) {
@@ -63,7 +81,7 @@
       }
 
       return (
-        <span className={cls}>{text}</span>
+        <span className={cls} onClick={this.handleClick}>{text}</span>
       );
     }
   });
