@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tabs</title>
+    <script src="https://fb.me/react-0.13.3.js" charset="utf-8"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js" charset="utf-8"></script>
+    <style>
+      ul {
+        list-style: none;
+        width: 300px;
+        padding: 0 20px;
+        text-align: center;
+      }
+      li {
+        display: inline-block;
+        padding: 2px 5px;
+        margin: 0px 5px;
+        cursor: pointer;
+      }
+      li:hover{
+        background: orange;
+      }
+      li.selected {
+        font-weight: bold;
+        background: orange;
+      }
+      article {
+        width: 300px;
+        height: 200px;
+        border: 1px dotted gray;
+        border-radius: 5px;
+        padding: 10px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tabs"></div>
+    <script type="text/jsx">
+      var Tabs = React.createClass({
+        getInitialState: function () {
+          return {selectedIdx: 0};
+        },
+        handleClick: function (e) {
+          this.setState({selectedIdx: e.target.value});
+        },
+        render: function () {
+          var tabs = this.props.tabs;
+          var idx = this.state.selectedIdx;
+          var that = this;
+
+          return (
+            <div>
+              <ul>
+                {
+                  tabs.map(function (tab, i) {
+                    var k = (i === idx) ? 'selected' : '';
+                    return (
+                      <li key={i}
+                          className={k}
+                          onClick={that.handleClick}
+                          value={i}>
+                        {tab.title}
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+              <article>{tabs[idx].content}</article>
+            </div>
+          );
+        }
+      });
+
+      var tabs = [
+        {title: 'one', content: 'one one one one one one one one one one one'},
+        {title: 'two', content: 'two two two two two two two two two two two'},
+        {title: 'three', content: 'three three three three three three three'},
+        {title: 'four', content: 'four four four four four four four four'},
+        {title: 'five', content: 'five five five five five five five five'}
+      ];
+
+      React.render(
+        <Tabs tabs={tabs} />,
+        document.getElementById('tabs')
+      );
+    </script>
+  </body>
+</html>
