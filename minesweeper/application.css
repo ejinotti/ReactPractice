@@ -1,3 +1,29 @@
 body {
-  background: gray;
+  background: whitesmoke;
+}
+
+.board {
+  width: 260px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+
+.row {
+  height: 26px;
+}
+
+.tile {
+  background: lightgray;
+  border-style: outset;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.tile.explored {
+  border-style: inset;
+}
+
+.tile.exlored.bombed {
+  background: red;
 }
